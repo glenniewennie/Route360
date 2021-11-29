@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		543A6F1C27557F1200636358 /* StartPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543A6F1B27557F1200636358 /* StartPoint.swift */; };
 		54C81EEE275575420025330D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C81EED275575420025330D /* AppDelegate.swift */; };
 		54C81EF0275575420025330D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C81EEF275575420025330D /* SceneDelegate.swift */; };
 		54C81EF2275575420025330D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C81EF1275575420025330D /* ViewController.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		543A6F1B27557F1200636358 /* StartPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartPoint.swift; sourceTree = "<group>"; };
 		54C81EEA275575420025330D /* Route360.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Route360.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54C81EED275575420025330D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		54C81EEF275575420025330D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 				54C81EED275575420025330D /* AppDelegate.swift */,
 				54C81EEF275575420025330D /* SceneDelegate.swift */,
 				54C81EF1275575420025330D /* ViewController.swift */,
+				543A6F1B27557F1200636358 /* StartPoint.swift */,
 				54C81EF3275575420025330D /* Main.storyboard */,
 				54C81EF6275575450025330D /* Assets.xcassets */,
 				54C81EF8275575450025330D /* LaunchScreen.storyboard */,
@@ -261,6 +264,7 @@
 				54C81EF2275575420025330D /* ViewController.swift in Sources */,
 				54C81EEE275575420025330D /* AppDelegate.swift in Sources */,
 				54C81EF0275575420025330D /* SceneDelegate.swift in Sources */,
+				543A6F1C27557F1200636358 /* StartPoint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
