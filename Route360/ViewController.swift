@@ -30,6 +30,10 @@ class ViewController: UIViewController, MKMapViewDelegate {
         mapView.addAnnotation(pennypacker)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        determineCurrentLocation()
+    }
+    
     // This is called when an annotation needs to be shown
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard annotation is StartPoint else { return nil }
