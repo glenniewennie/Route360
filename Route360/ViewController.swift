@@ -22,6 +22,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addTapped))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Search", style: .plain, target: self, action: #selector(searchTapped))
     
         
         let pennypacker = StartPoint(title: "Pennypacker", coordinate: CLLocationCoordinate2D(latitude: 42.37265009033051, longitude: -71.113721461528942), distance: 4.5)
@@ -92,11 +93,50 @@ class ViewController: UIViewController, MKMapViewDelegate {
     func submit(_ latitude: Double, _ longitude: Double, _ distance: Double) {
         let newStartPoint = StartPoint(title: "New Start Point", coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), distance: distance)
         // Remove all previous annotations
-        let allAnnotations = mapView.annotations
-        self.mapView.removeAnnotations(allAnnotations)
+        self.mapView.removeAnnotations(mapView.annotations)
         mapView.addAnnotation(newStartPoint)
     }
-                                   
+    
+    // Runs if user wants to search up a physical location
+    @objc func searchTapped(_ sender: Any) {
+        let ac = UIAlertController(title: "Starting point", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+        ac.addTextField()
+        ac.textFields![0].placeholder = "Enter name of location"
+        ac.textFields![1].placeholder = "Enter distance"
+        let submitAction = UIAlertAction(title: "Done", style: .default) { [weak self, weak ac] action in
+            guard let locationName = ac?.textFields?[0].text else {return}
+            guard let distance = ac?.textFields?[1].text else {return}
+            guard let doubleDistance = distance.toDouble() else { return }
+            self?.submit(locationName, doubleDistance)
+        }
+        ac.addAction(submitAction)
+        present(ac, animated: true)
+    }
+    
+    func submit(_ locationName: String, _ distance: Double) {
+        let searchRequest = MKLocalSearch.Request()
+        searchRequest.naturalLanguageQuery = locationName
+        let search = MKLocalSearch(request: searchRequest)
+        search.start { response, error in
+            guard let response = response else {
+                print("Error: \(error?.localizedDescription ?? "Unknown error").")
+                return
+            }
+            let ac = UIAlertController(title: "Choose your location", message: nil, preferredStyle: .actionSheet)
+            // Increment through all possible locations and add them to action sheet as choices
+            for item in response.mapItems {
+                if let name = item.name, let location = item.placemark.location {
+                    ac.addAction(UIAlertAction(title: name, style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                        let newStartPoint = StartPoint(title: name, coordinate: location.coordinate, distance: distance)
+                        self.mapView.removeAnnotations(self.mapView.annotations)
+                        self.mapView.addAnnotation(newStartPoint)
+                    }))
+                }
+            }
+            self.present(ac, animated: true)
+        }
+    }
     func findRoutes() {
         
     }
