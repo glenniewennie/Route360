@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C9E893A2755FB1500A9032F /* Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 3C9E89392755FAF300A9032F /* Location.gpx */; };
 		543A6F1E275582E600636358 /* StartPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543A6F1D275582E600636358 /* StartPoint.swift */; };
 		54C81EEE275575420025330D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C81EED275575420025330D /* AppDelegate.swift */; };
 		54C81EF0275575420025330D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C81EEF275575420025330D /* SceneDelegate.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3C9E89392755FAF300A9032F /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		543A6F1D275582E600636358 /* StartPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartPoint.swift; sourceTree = "<group>"; };
 		54C81EEA275575420025330D /* Route360.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Route360.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54C81EED275575420025330D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				54C81EF6275575450025330D /* Assets.xcassets */,
 				54C81EF8275575450025330D /* LaunchScreen.storyboard */,
 				54C81EFB275575450025330D /* Info.plist */,
+				3C9E89392755FAF300A9032F /* Location.gpx */,
 			);
 			path = Route360;
 			sourceTree = "<group>";
@@ -236,6 +239,7 @@
 			files = (
 				54C81EFA275575450025330D /* LaunchScreen.storyboard in Resources */,
 				54C81EF7275575450025330D /* Assets.xcassets in Resources */,
+				3C9E893A2755FB1500A9032F /* Location.gpx in Resources */,
 				54C81EF5275575420025330D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -443,6 +447,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D8AQVTV8A7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Route360/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -470,6 +475,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = D8AQVTV8A7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Route360/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

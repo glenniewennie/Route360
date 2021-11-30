@@ -9,6 +9,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
+
 // Used to convert Strings to Doubles
 extension String {
     func toDouble() -> Double? {
@@ -16,15 +17,19 @@ extension String {
      }
 }
 
-class ViewController: UIViewController, MKMapViewDelegate {
+class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
+    var locationManager:CLLocationManager!
+    var currentLocation:CLLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addTapped))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Search", style: .plain, target: self, action: #selector(searchTapped))
+        
+        addMapTrackingButton()
+        
+        title = "Route360"
+        navigationItems()
     
         let pennypacker = StartPoint(title: "Pennypacker", coordinate: CLLocationCoordinate2D(latitude: 42.37201109033051, longitude: -71.11369242), distance: 4.5)
         mapView.addAnnotation(pennypacker)
@@ -33,6 +38,22 @@ class ViewController: UIViewController, MKMapViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         determineCurrentLocation()
     }
+    
+    
+    private func navigationItems() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .add,
+            target: self,
+            action: #selector(addTapped)
+        )
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "magnifyingglass"),
+            style: .done,
+            target: self,
+            action: #selector(searchTapped)
+        )
+    }
+    
     
     // This is called when an annotation needs to be shown
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -152,6 +173,46 @@ class ViewController: UIViewController, MKMapViewDelegate {
             }
         }
     }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        defer { currentLocation = locations.last }
+        
+        if currentLocation == nil {
+            // Zoom to user location
+            if let userLocation = locations.last {
+                let viewRegion = MKCoordinateRegion(center: userLocation.coordinate, latitudinalMeters: 2000, longitudinalMeters: 2000)
+                mapView.setRegion(viewRegion, animated: true)
+                
+            }
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Error - locationManager: \(error.localizedDescription)")
+    }
+
+    func determineCurrentLocation() {
+        mapView.delegate = self
+        mapView.showsUserLocation = true
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+        //Check for Location Services
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
+    func addMapTrackingButton() {
+        let buttonItem = MKUserTrackingButton(mapView: mapView)
+        buttonItem.frame = CGRect(origin: CGPoint(x:5, y: 25), size: CGSize(width: 35, height: 35))
+
+        mapView.addSubview(buttonItem)
+    }
+    
+    
     func findRoutes() {
         
     }
