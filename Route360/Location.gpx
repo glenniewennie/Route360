@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <gpx version="1.1" creator="Xcode">
-    <wpt lat="40.606641" lon="-74.044835">
-     <time>2019-11-05T16:25:12Z</time>
+    <wpt lat="42.37201" lon="-71.11369">
+        <time>2021-11-30T17:26:20Z</time>
    </wpt>
-   <wpt lat="40.608693" lon="-74.038514">
-     <time>2019-11-05T16:25:17Z</time>
+   <wpt lat="42.37201" lon="-71.11369">
+     <time>2021-11-30T17:27:00Z</time>
    </wpt>
-   <wpt lat="40.610769" lon="-74.032217">
-     <time>2019-11-05T16:25:26Z</time>
+   <wpt lat="42.37201" lon="-71.11369">
+     <time>2021-11-30T17:27:30Z</time>
    </wpt>
+
 </gpx>

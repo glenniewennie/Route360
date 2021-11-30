@@ -41,11 +41,20 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     
     private func navigationItems() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .add,
-            target: self,
-            action: #selector(addTapped)
-        )
+        navigationController?.navigationBar.tintColor = .label
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(
+                image: UIImage(systemName: "info.circle"),
+                style: .done,
+                target: self,
+                action: #selector(infoButtonTapped)
+            ),
+            UIBarButtonItem(
+                barButtonSystemItem: .add,
+                target: self,
+                action: #selector(addTapped)
+            )
+        ]
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "magnifyingglass"),
             style: .done,
@@ -53,6 +62,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             action: #selector(searchTapped)
         )
     }
+    
+    @objc func infoButtonTapped(_ sender: Any) {
+        let story = UIStoryboard(name: "Main", bundle: nil)
+        let controller = story.instantiateViewController(identifier: "SecondController") 
+        self.present(controller, animated: true, completion: nil)
+    }
+    
     
     // This is called when routes need to be drawn
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -220,9 +236,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func addMapTrackingButton() {
         
         let trackButton = MKUserTrackingButton(mapView: mapView)
-        trackButton.layer.backgroundColor = UIColor(white: 1, alpha: 0.8).cgColor
-            trackButton.layer.borderColor = UIColor.white.cgColor
-            //trackButton.layer.borderWidth = 1
+            trackButton.tintColor = .label
+            //trackButton.layer.backgroundColor = UIColor(white: 1, alpha: 0.8).cgColor
+            trackButton.backgroundColor = .systemBackground.withAlphaComponent(0.7)
+            trackButton.layer.borderColor = UIColor.label.cgColor
+            trackButton.layer.borderWidth = 1
             trackButton.layer.cornerRadius = 5
             trackButton.translatesAutoresizingMaskIntoConstraints = false
             trackButton.widthAnchor.constraint(equalToConstant: 45).isActive = true

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3C9E893A2755FB1500A9032F /* Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 3C9E89392755FAF300A9032F /* Location.gpx */; };
 		3C9E893C2756B0C600A9032F /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 3C9E893B2756B0C500A9032F /* logo.png */; };
+		3C9E893E2756DA1900A9032F /* SecondController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E893D2756DA1800A9032F /* SecondController.swift */; };
 		543A6F1E275582E600636358 /* StartPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543A6F1D275582E600636358 /* StartPoint.swift */; };
 		54C81EEE275575420025330D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C81EED275575420025330D /* AppDelegate.swift */; };
 		54C81EF0275575420025330D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C81EEF275575420025330D /* SceneDelegate.swift */; };
@@ -41,6 +42,7 @@
 /* Begin PBXFileReference section */
 		3C9E89392755FAF300A9032F /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		3C9E893B2756B0C500A9032F /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = ../../../Desktop/logo.png; sourceTree = "<group>"; };
+		3C9E893D2756DA1800A9032F /* SecondController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondController.swift; sourceTree = "<group>"; };
 		543A6F1D275582E600636358 /* StartPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartPoint.swift; sourceTree = "<group>"; };
 		54C81EEA275575420025330D /* Route360.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Route360.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54C81EED275575420025330D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				54C81EF1275575420025330D /* ViewController.swift */,
 				543A6F1D275582E600636358 /* StartPoint.swift */,
 				54C81EF3275575420025330D /* Main.storyboard */,
+				3C9E893D2756DA1800A9032F /* SecondController.swift */,
 				54C81EF6275575450025330D /* Assets.xcassets */,
 				54C81EF8275575450025330D /* LaunchScreen.storyboard */,
 				54C81EFB275575450025330D /* Info.plist */,
@@ -273,6 +276,7 @@
 				54C81EEE275575420025330D /* AppDelegate.swift in Sources */,
 				54C81EF0275575420025330D /* SceneDelegate.swift in Sources */,
 				543A6F1E275582E600636358 /* StartPoint.swift in Sources */,
+				3C9E893E2756DA1900A9032F /* SecondController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
