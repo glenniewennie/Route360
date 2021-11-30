@@ -20,12 +20,11 @@ extension String {
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
-    var locationManager:CLLocationManager!
-    var currentLocation:CLLocation?
+    var locationManager: CLLocationManager!
+    var currentLocation: CLLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         addMapTrackingButton()
         
         title = "Route360"
@@ -33,6 +32,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
         let pennypacker = StartPoint(title: "Pennypacker", coordinate: CLLocationCoordinate2D(latitude: 42.37201109033051, longitude: -71.11369242), distance: 4.5)
         mapView.addAnnotation(pennypacker)
+    
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -54,6 +54,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         )
     }
     
+    // This is called when routes need to be drawn
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
+        renderer.strokeColor = UIColor.blue
+        return renderer
+    }
     
     // This is called when an annotation needs to be shown
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -119,6 +125,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let newStartPoint = StartPoint(title: "New Start Point", coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), distance: distance)
         // Remove all previous annotations
         self.mapView.removeAnnotations(mapView.annotations)
+        // Also delete all old overlays
+        self.mapView.removeOverlays(mapView.overlays)
         mapView.addAnnotation(newStartPoint)
     }
     
@@ -128,7 +136,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         ac.addTextField()
         ac.addTextField()
         ac.textFields![0].placeholder = "Enter name of location"
-        ac.textFields![1].placeholder = "Enter distance"
+        ac.textFields![1].placeholder = "Enter distance (in miles)"
         let submitAction = UIAlertAction(title: "Done", style: .default) { [weak self, weak ac] action in
             guard let locationName = ac?.textFields?[0].text else {return}
             guard let distance = ac?.textFields?[1].text else {return}
@@ -155,6 +163,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 if let name = item.name, let location = item.placemark.location {
                     let newStartPoint = StartPoint(title: name, coordinate: location.coordinate, distance: distance)
                     self.mapView.removeAnnotations(self.mapView.annotations)
+                    // Also delete all old overlays
+                    self.mapView.removeOverlays(self.mapView.overlays)
                     self.mapView.addAnnotation(newStartPoint)
                 }
             } else {
@@ -164,6 +174,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                     if let name = item.name, let location = item.placemark.location {
                         ac.addAction(UIAlertAction(title: name, style: .default, handler: { (alert: UIAlertAction!) -> Void in
                             let newStartPoint = StartPoint(title: name, coordinate: location.coordinate, distance: distance)
+                            // Also delete all old overlays
+                            self.mapView.removeOverlays(self.mapView.overlays)
                             self.mapView.removeAnnotations(self.mapView.annotations)
                             self.mapView.addAnnotation(newStartPoint)
                         }))
@@ -214,7 +226,30 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     
     func findRoutes() {
+        let request = MKDirections.Request()
         
+        // Set the starting point to annotation's location
+        let annotationCoordinate = self.mapView.annotations[0].coordinate
+        request.source = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate, addressDictionary: nil))
+        // Set current destination to be Hurlbut
+        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 42.3722984046454, longitude: -71.11403724575048), addressDictionary: nil))
+        request.requestsAlternateRoutes = true
+        request.transportType = .walking
+        
+        let directions = MKDirections(request: request)
+        // Find routes
+        directions.calculate { [unowned self] response, error in
+            guard let unwrappedResponse = response else { return }
+            // Iterate through array and add each route to the map
+            for route in unwrappedResponse.routes {
+                // Set bounds on distance (make sure to convert from meters to miles
+//                if route.distance / (1609.34) > 0.9 * startPoint.distance && route.distance < 1.1 * startPoint.distance
+                
+                self.mapView.addOverlay(route.polyline)
+                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
+                
+            }
+        }
     }
     
 }
