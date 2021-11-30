@@ -123,6 +123,17 @@ class ViewController: UIViewController, MKMapViewDelegate {
                 print("Error: \(error?.localizedDescription ?? "Unknown error").")
                 return
             }
+            
+            // Means there's only one location possible so user doesn't have to choose
+            if response.mapItems.count == 1 {
+                let item = response.mapItems[0]
+                if let name = item.name, let location = item.placemark.location {
+                    let newStartPoint = StartPoint(title: name, coordinate: location.coordinate, distance: distance)
+                    self.mapView.removeAnnotations(self.mapView.annotations)
+                    self.mapView.addAnnotation(newStartPoint)
+                }
+            }
+            
             let ac = UIAlertController(title: "Choose your location", message: nil, preferredStyle: .actionSheet)
             // Increment through all possible locations and add them to action sheet as choices
             for item in response.mapItems {
