@@ -11,12 +11,12 @@ import MapKit
 class StartPoint: NSObject, MKAnnotation {
     var title: String?
     var coordinate: CLLocationCoordinate2D
-    var info: String
+    var distance: Double
 
-    init(title: String, coordinate: CLLocationCoordinate2D, info: String) {
+    init(title: String, coordinate: CLLocationCoordinate2D, distance: Double) {
        self.title = title
        self.coordinate = coordinate
-       self.info = info
+       self.distance = distance
     }
 
 }
