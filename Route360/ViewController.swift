@@ -7,7 +7,9 @@
 
 import UIKit
 import MapKit
+import CoreLocation
 
+// Used to convert Strings to Doubles
 extension String {
     func toDouble() -> Double? {
         return NumberFormatter().number(from: self)?.doubleValue
@@ -24,9 +26,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addTapped))
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Search", style: .plain, target: self, action: #selector(searchTapped))
     
-        
-        let pennypacker = StartPoint(title: "Pennypacker", coordinate: CLLocationCoordinate2D(latitude: 42.37265009033051, longitude: -71.113721461528942), distance: 4.5)
-
+        let pennypacker = StartPoint(title: "Pennypacker", coordinate: CLLocationCoordinate2D(latitude: 42.37201109033051, longitude: -71.11369242), distance: 4.5)
         mapView.addAnnotation(pennypacker)
     }
     
@@ -130,7 +130,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
                 if let name = item.name, let location = item.placemark.location {
                     let newStartPoint = StartPoint(title: name, coordinate: location.coordinate, distance: distance)
                     self.mapView.removeAnnotations(self.mapView.annotations)
-                    self.mapView.addAnnotation(newStartPoint)
+                    //self.mapView.addAnnotation(newStartPoint)
                 }
             }
             
