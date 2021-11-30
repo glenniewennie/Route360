@@ -16,8 +16,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="1Q7-Ce-i6a">
-                                <rect key="frame" x="0.0" y="63" width="414" height="833"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Q7-Ce-i6a">
+                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                                 <connections>
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="s43-Qe-kLq"/>
                                 </connections>
@@ -26,7 +26,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="1Q7-Ce-i6a" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" constant="-25" id="WJD-c0-ssV"/>
+                            <constraint firstItem="1Q7-Ce-i6a" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="topMargin" id="WJD-c0-ssV"/>
                             <constraint firstItem="1Q7-Ce-i6a" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="X9f-Q2-oeW"/>
                             <constraint firstItem="1Q7-Ce-i6a" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="cn9-nC-cEd"/>
                             <constraint firstAttribute="bottomMargin" secondItem="1Q7-Ce-i6a" secondAttribute="bottom" constant="-34" id="ex3-Lo-MP4"/>

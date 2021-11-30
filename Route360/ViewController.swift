@@ -206,10 +206,30 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     func addMapTrackingButton() {
-        let buttonItem = MKUserTrackingButton(mapView: mapView)
-        buttonItem.frame = CGRect(origin: CGPoint(x:5, y: 25), size: CGSize(width: 35, height: 35))
-
-        mapView.addSubview(buttonItem)
+        
+        let trackButton = MKUserTrackingButton(mapView: mapView)
+        trackButton.layer.backgroundColor = UIColor(white: 1, alpha: 0.8).cgColor
+            trackButton.layer.borderColor = UIColor.white.cgColor
+            //trackButton.layer.borderWidth = 1
+            trackButton.layer.cornerRadius = 5
+            trackButton.translatesAutoresizingMaskIntoConstraints = false
+            trackButton.widthAnchor.constraint(equalToConstant: 45).isActive = true
+            trackButton.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        mapView.addSubview(trackButton)
+        
+        let scale = MKScaleView(mapView: mapView)
+            scale.legendAlignment = .trailing
+            scale.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview(scale)
+        
+        //Move compass below tracking button
+        mapView.layoutMargins = UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 8)
+        
+        NSLayoutConstraint.activate([trackButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+                                        trackButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
+                                        scale.trailingAnchor.constraint(equalTo: trackButton.leadingAnchor, constant: -10),
+                                        scale.centerYAnchor.constraint(equalTo: trackButton.centerYAnchor),
+                                    ])
     }
     
     
