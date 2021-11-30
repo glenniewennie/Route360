@@ -130,22 +130,22 @@ class ViewController: UIViewController, MKMapViewDelegate {
                 if let name = item.name, let location = item.placemark.location {
                     let newStartPoint = StartPoint(title: name, coordinate: location.coordinate, distance: distance)
                     self.mapView.removeAnnotations(self.mapView.annotations)
-                    //self.mapView.addAnnotation(newStartPoint)
+                    self.mapView.addAnnotation(newStartPoint)
                 }
-            }
-            
-            let ac = UIAlertController(title: "Choose your location", message: nil, preferredStyle: .actionSheet)
-            // Increment through all possible locations and add them to action sheet as choices
-            for item in response.mapItems {
-                if let name = item.name, let location = item.placemark.location {
-                    ac.addAction(UIAlertAction(title: name, style: .default, handler: { (alert: UIAlertAction!) -> Void in
-                        let newStartPoint = StartPoint(title: name, coordinate: location.coordinate, distance: distance)
-                        self.mapView.removeAnnotations(self.mapView.annotations)
-                        self.mapView.addAnnotation(newStartPoint)
-                    }))
+            } else {
+                let ac = UIAlertController(title: "Choose your location", message: nil, preferredStyle: .actionSheet)
+                // Increment through all possible locations and add them to action sheet as choices
+                for item in response.mapItems {
+                    if let name = item.name, let location = item.placemark.location {
+                        ac.addAction(UIAlertAction(title: name, style: .default, handler: { (alert: UIAlertAction!) -> Void in
+                            let newStartPoint = StartPoint(title: name, coordinate: location.coordinate, distance: distance)
+                            self.mapView.removeAnnotations(self.mapView.annotations)
+                            self.mapView.addAnnotation(newStartPoint)
+                        }))
+                    }
                 }
+                self.present(ac, animated: true)
             }
-            self.present(ac, animated: true)
         }
     }
     func findRoutes() {
