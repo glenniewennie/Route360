@@ -17,6 +17,18 @@ extension String {
      }
 }
 
+// Used to generate a random color - see rendererFor method
+extension UIColor {
+    static func random() -> UIColor {
+        return UIColor(
+            red: .random(in: 0...1),
+            green: .random(in: 0...1),
+            blue: .random(in: 0...1),
+            alpha: 1.0
+        )
+    }
+}
+
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
@@ -30,7 +42,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         title = "Route360"
         navigationItems()
     
-        let pennypacker = StartPoint(title: "Pennypacker", coordinate: CLLocationCoordinate2D(latitude: 42.37201109033051, longitude: -71.11369242), distance: 4.5)
+        let pennypacker = StartPoint(title: "Pennypacker", coordinate: CLLocationCoordinate2D(latitude: 42.37201109033051, longitude: -71.11369242), distance: 4)
         mapView.addAnnotation(pennypacker)
     
     }
@@ -73,7 +85,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     // This is called when routes need to be drawn
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
-        renderer.strokeColor = UIColor.blue
+        // Generate a random color solely to be able to distinguish lines
+        renderer.strokeColor = UIColor.random()
         return renderer
     }
     
@@ -107,7 +120,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let longitude: String = String(location.coordinate.longitude)
         let ac = UIAlertController(title: "Start Point", message: "latitude: \(latitude)\n longitude: \(longitude)", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Find routes", style: .default, handler: { action in
-            self.findRoutes()
+            self.findRoutes(distance: location.distance)
         }))
         present(ac, animated: true)
     }
@@ -262,33 +275,91 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                                     ])
     }
     
-    
-    func findRoutes() {
-        let request = MKDirections.Request()
+    /* Algorithm idea:
+     Given a distance d, we find a marker d/4 away, find another marker d/4 away, find a last one d/4 away, then find a route to then back from the marker
+      To find this marker, we go equal amount distance longitude and latitude such that longitude + latiude = d/3
+     69 miles in y direction is 1 degree latitude
+     54.6 miles in x direction is 1 degree longitude
+     To provide alternate routes, we find different markers
+     */
+    func findRoutes(distance: Double) {
+        let request1 = MKDirections.Request()
         
         // Set the starting point to annotation's location
-        let annotationCoordinate = self.mapView.annotations[0].coordinate
-        request.source = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate, addressDictionary: nil))
-        // Set current destination to be Hurlbut
-        request.destination = MKMapItem(placemark: MKPlacemark(coordinate: CLLocationCoordinate2D(latitude: 42.3722984046454, longitude: -71.11403724575048), addressDictionary: nil))
-        request.requestsAlternateRoutes = true
-        request.transportType = .walking
+        let annotationCoordinate1 = self.mapView.annotations[0].coordinate
+        request1.source = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate1, addressDictionary: nil))
+        let markerLatitude1 = annotationCoordinate1.latitude - distance/(4*69.0)
+        let markerLongitude1 = annotationCoordinate1.longitude
+        let annotationCoordinate2 = CLLocationCoordinate2D(latitude: markerLatitude1, longitude: markerLongitude1)
+        request1.destination = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate2, addressDictionary: nil))
+        request1.transportType = .walking
         
-        let directions = MKDirections(request: request)
+        let directions1 = MKDirections(request: request1)
         // Find routes
-        directions.calculate { [unowned self] response, error in
+        directions1.calculate { [unowned self] response, error in
             guard let unwrappedResponse = response else { return }
             // Iterate through array and add each route to the map
             for route in unwrappedResponse.routes {
-                // Set bounds on distance (make sure to convert from meters to miles
-//                if route.distance / (1609.34) > 0.9 * startPoint.distance && route.distance < 1.1 * startPoint.distance
-                
                 self.mapView.addOverlay(route.polyline)
                 self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
-                
+            }
+        }
+        
+        // Go to third pin
+        let request2 = MKDirections.Request()
+        request2.source = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate2, addressDictionary: nil))
+        let markerLatitude2 = annotationCoordinate2.latitude
+        let markerLongitude2 = annotationCoordinate2.longitude - distance/(4*54.6)
+        let annotationCoordinate3 = CLLocationCoordinate2D(latitude: markerLatitude2, longitude: markerLongitude2)
+        request2.destination = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate3, addressDictionary: nil))
+        request2.transportType = .walking
+        let directions2 = MKDirections(request: request2)
+        // Find routes
+        directions2.calculate { [unowned self] response, error in
+            guard let unwrappedResponse = response else { return }
+            // Iterate through array and add each route to the map
+            for route in unwrappedResponse.routes {
+                self.mapView.addOverlay(route.polyline)
+                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
+            }
+        }
+        
+        // Go to final pin
+        let request3 = MKDirections.Request()
+        request3.source = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate3, addressDictionary: nil))
+        let markerLatitude3 = annotationCoordinate2.latitude + distance/(4*69.0)
+        let markerLongitude3 = annotationCoordinate2.longitude
+        let annotationCoordinate4 = CLLocationCoordinate2D(latitude: markerLatitude3, longitude: markerLongitude3)
+        request3.destination = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate4, addressDictionary: nil))
+        request3.transportType = .walking
+        let directions3 = MKDirections(request: request3)
+        // Find routes
+        directions3.calculate { [unowned self] response, error in
+            guard let unwrappedResponse = response else { return }
+            // Iterate through array and add each route to the map
+            for route in unwrappedResponse.routes {
+                self.mapView.addOverlay(route.polyline)
+                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
+            }
+        }
+        
+        // Go home
+        let request4 = MKDirections.Request()
+        request4.source = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate4, addressDictionary: nil))
+        request4.destination = request1.source
+        request4.transportType = .walking
+        let directions4 = MKDirections(request: request4)
+        // Find routes
+        directions4.calculate { [unowned self] response, error in
+            guard let unwrappedResponse = response else { return }
+            // Iterate through array and add each route to the map
+            for route in unwrappedResponse.routes {
+                self.mapView.addOverlay(route.polyline)
+                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
             }
         }
     }
+    
     
 }
 
