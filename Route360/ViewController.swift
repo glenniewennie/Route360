@@ -283,9 +283,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
      To provide alternate routes, we find different markers
      */
     func findRoutes(distance: Double) {
-        let request1 = MKDirections.Request()
         
         // Set the starting point to annotation's location
+        let request1 = MKDirections.Request()
         let annotationCoordinate1 = self.mapView.annotations[0].coordinate
         request1.source = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate1, addressDictionary: nil))
         let markerLatitude1 = annotationCoordinate1.latitude - distance/(4*69.0)
@@ -327,8 +327,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         // Go to final pin
         let request3 = MKDirections.Request()
         request3.source = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate3, addressDictionary: nil))
-        let markerLatitude3 = annotationCoordinate2.latitude + distance/(4*69.0)
-        let markerLongitude3 = annotationCoordinate2.longitude
+        let markerLatitude3 = annotationCoordinate3.latitude + distance/(4*69.0)
+        let markerLongitude3 = annotationCoordinate3.longitude
         let annotationCoordinate4 = CLLocationCoordinate2D(latitude: markerLatitude3, longitude: markerLongitude3)
         request3.destination = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate4, addressDictionary: nil))
         request3.transportType = .walking
@@ -358,6 +358,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
             }
         }
+         
     }
     
     
