@@ -125,38 +125,34 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         present(ac, animated: true)
     }
     
+    // If user wants to start at current location
     @objc func addTapped(_ sender: Any) {
-        let ac = UIAlertController(title: "Starting point", message: nil, preferredStyle: .alert)
+        let ac = UIAlertController(title: "Start at current location", message: nil, preferredStyle: .alert)
         ac.addTextField()
-        ac.addTextField()
-        ac.addTextField()
-        ac.textFields![0].placeholder = "Enter latitude"
-        ac.textFields![1].placeholder = "Enter longitude"
-        ac.textFields![2].placeholder = "Enter distance"
-        
-        // Test coords - 30.371302863706674, -97.66758083066455
+        ac.textFields![0].placeholder = "Enter distance"
+ 
         let submitAction = UIAlertAction(title: "Done", style: .default) { [weak self, weak ac] action in
-            guard let latitude = ac?.textFields?[0].text else { return }
-            guard let longitude = ac?.textFields?[1].text else { return }
-            guard let distance = ac?.textFields?[2].text else { return }
+            guard let distance = ac?.textFields?[0].text else { return }
             // Make sure all of these are doubles
-            guard let doubleLatitude = latitude.toDouble() else {return}
-            guard let doubleLongitude = longitude.toDouble() else {return}
             guard let doubleDistance = distance.toDouble() else { return }
-            self?.submit(doubleLatitude, doubleLongitude, doubleDistance)
+            self?.submit(doubleDistance)
 
         }
         ac.addAction(submitAction)
         present(ac, animated: true)
     }
     
-    func submit(_ latitude: Double, _ longitude: Double, _ distance: Double) {
-        let newStartPoint = StartPoint(title: "New Start Point", coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), distance: distance)
+    // Runs when user wants to find loop from current location
+    func submit(_ distance: Double) {
+        guard let currentLatitude = currentLocation?.coordinate.latitude else {return}
+        guard let currentLongitude = currentLocation?.coordinate.longitude else {return}
+        let newStartPoint = StartPoint(title: "Current Location", coordinate: CLLocationCoordinate2D(latitude: currentLatitude, longitude: currentLongitude), distance: distance)
         // Remove all previous annotations
         self.mapView.removeAnnotations(mapView.annotations)
         // Also delete all old overlays
         self.mapView.removeOverlays(mapView.overlays)
         mapView.addAnnotation(newStartPoint)
+        findRoutes(distance: distance)
     }
     
     // Runs if user wants to search up a physical location
@@ -244,6 +240,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             locationManager.requestWhenInUseAuthorization()
             locationManager.startUpdatingLocation()
         }
+        
     }
     
     func addMapTrackingButton() {
@@ -283,9 +280,22 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
      To provide alternate routes, we find different markers
      */
     func findRoutes(distance: Double) {
+        for annotation in mapView.annotations {
+            print(annotation.coordinate)
+        }
+        
+//        var requests = [MKDirections.Request]()
+//        var annotationCoordinates = [CLLocationCoordinate2D]()
+//        
+//        for _ in 1...4 {
+//            requests.append(MKDirections.Request())
+//            annotationCoordinates.append(CLLocationCoordinate2D())
+//        }
         
         // Set the starting point to annotation's location
         let request1 = MKDirections.Request()
+        
+        // annotations[0] is user's current location but sometimes it's annotations[1]?
         let annotationCoordinate1 = self.mapView.annotations[0].coordinate
         request1.source = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate1, addressDictionary: nil))
         let markerLatitude1 = annotationCoordinate1.latitude - distance/(4*69.0)
