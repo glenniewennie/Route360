@@ -2,7 +2,7 @@
 //  StartPoint.swift
 //  Route360
 //
-//  Created by Glen Liu on 11/29/21.
+//  Created by Glen Liu and Joshua Halberstadt on 11/20/21.
 //
 
 import UIKit

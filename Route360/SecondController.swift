@@ -2,7 +2,7 @@
 //  SecondController.swift
 //  Route360
 //
-//  Created by Joshua Halberstadt on 11/30/21.
+//  Created by Glen Liu and Joshua Halberstadt on 11/28/21.
 //
 
 import UIKit

@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  Route360
 //
-//  Created by Glen Liu on 11/29/21.
+//  Created by Glen Liu and Joshua Halberstadt on 11/20/21.
 //
 
 import UIKit
@@ -41,14 +41,12 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     var resultSearchController: UISearchController? = nil
     var selectedPin: MKPlacemark? = nil
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         addMapTrackingButton()
         title = "Route360"
         navigationItems()
         configureSearchTable()
-    
     }
     
     // Whenever the view is on screen determine current location
@@ -74,7 +72,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         // gives the search table access to the current location of the map
         locationSearchTable.mapView = mapView
         locationSearchTable.handleMapSearchDelegate = self
-        
     }
     
     // navigation buttons in the navigation bar
@@ -127,7 +124,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
         // Generate a random color solely to be able to distinguish lines
-        renderer.strokeColor = UIColor.random()
+        renderer.strokeColor = UIColor(hue: 0.5472, saturation: 1, brightness: 1, alpha: 1.0)
+        
         return renderer
     }
     
@@ -174,13 +172,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         ac.textFields![0].placeholder = "Enter distance"
         ac.textFields![0].keyboardType = UIKeyboardType.decimalPad
 
- 
         let submitAction = UIAlertAction(title: "Done", style: .default) { [weak self, weak ac] action in
             guard let distance = ac?.textFields?[0].text else { return }
             // Make sure all of these are doubles
             guard let doubleDistance = distance.toDouble() else { return }
             self?.submit(doubleDistance)
-
         }
         ac.addAction(submitAction)
         present(ac, animated: true)
@@ -206,7 +202,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         search.start { response, error in
             guard let response = response else {
                 print("Error: \(error?.localizedDescription ?? "Unknown error").")
-
                 return
             }
             
@@ -230,44 +225,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                     break
                 }
             }
-            
-            
-            /*
-            if response.mapItems.count == 1 {
-                let item = response.mapItems[0]
-                if let name = item.name, let location = item.placemark.location {
-                    let newStartPoint = StartPoint(title: name, coordinate: location.coordinate, distance: distance)
-                    self.mapView.removeAnnotations(self.mapView.annotations)
-                    // Also delete all old overlays
-                    self.mapView.removeOverlays(self.mapView.overlays)
-                    self.mapView.addAnnotation(newStartPoint)
-                    // Zoom to pin
-                    let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
-                    let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
-                    self.mapView.setRegion(region, animated: true)
-                }
-            } else {
-                let ac = UIAlertController(title: "Choose your location", message: nil, preferredStyle: .actionSheet)
-                // Increment through all possible locations and add them to action sheet as choices
-                for item in response.mapItems {
-                    if let name = item.name, let location = item.placemark.location {
-                        ac.addAction(UIAlertAction(title: name, style: .default, handler: { (alert: UIAlertAction!) -> Void in
-                            let newStartPoint = StartPoint(title: name, coordinate: location.coordinate, distance: distance)
-                            // Also delete all old overlays
-                            self.mapView.removeOverlays(self.mapView.overlays)
-                            self.mapView.removeAnnotations(self.mapView.annotations)
-                            self.mapView.addAnnotation(newStartPoint)
-                            // Zoom to pin
-                            let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
-                            let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
-                            self.mapView.setRegion(region, animated: true)
-                        }))
-                    }
-                }
-                self.present(ac, animated: true)
-             
-            }
-             */
         }
     }
     
@@ -368,7 +325,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             // Iterate through array and add each route to the map
             for route in unwrappedResponse.routes {
                 self.mapView.addOverlay(route.polyline)
-                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
             }
         }
         
@@ -387,7 +343,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             // Iterate through array and add each route to the map
             for route in unwrappedResponse.routes {
                 self.mapView.addOverlay(route.polyline)
-                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
             }
         }
         
@@ -406,7 +361,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             // Iterate through array and add each route to the map
             for route in unwrappedResponse.routes {
                 self.mapView.addOverlay(route.polyline)
-                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
             }
         }
         
@@ -423,7 +377,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             for route in unwrappedResponse.routes {
                 //route.polyline.size.width = 10
                 self.mapView.addOverlay(route.polyline)
-                self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
             }
         }
     }
