@@ -82,20 +82,22 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 style: .done,
                 target: self,
                 action: #selector(infoButtonTapped)
-            ),
-            UIBarButtonItem(
-                image: UIImage(systemName: "location.fill"),
-                style: .done,
-                target: self,
-                action: #selector(addTapped)
             )
         ]
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "location.fill"),
+            style: .done,
+            target: self,
+            action: #selector(addTapped)
+        )
+        /*
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "magnifyingglass"),
             style: .done,
             target: self,
             action: #selector(searchTapped)
         )
+        */
     }
     
     @objc func infoButtonTapped(_ sender: Any) {
@@ -252,12 +254,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         do { currentLocation = locations.last }
-        
-          /*  let location = locations.first
-            let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
-            let region = MKCoordinateRegion(center: location!.coordinate, span: span)
-            mapView.setRegion(region, animated: true)
-           */
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -431,6 +427,27 @@ extension ViewController: HandleMapSearch {
         let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
         let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
         mapView.setRegion(region, animated: true)
+        
+        addDistance(placemark: placemark)
+    }
+    
+    func addDistance(placemark: MKPlacemark) {
+        
+        guard let name = placemark.name else { return }
+        
+        let ac = UIAlertController(title: "Start at " + name, message: nil, preferredStyle: .alert)
+        ac.addTextField()
+        ac.textFields![0].placeholder = "Enter distance"
+        ac.textFields![0].keyboardType = UIKeyboardType.decimalPad
+        
+        let submitAction = UIAlertAction(title: "Done", style: .default) { [weak self, weak ac] action in
+            guard let locationName = placemark.name else {return}
+            guard let distance = ac?.textFields?[0].text else {return}
+            guard let doubleDistance = distance.toDouble() else { return }
+            self?.submit(locationName, doubleDistance)
+        }
+        ac.addAction(submitAction)
+        present(ac, animated: true)
     }
 }
 
