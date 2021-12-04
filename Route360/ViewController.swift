@@ -226,6 +226,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                         
                         self.findRoutes(distance: distance, startPoint: newStartPoint)
                     }
+                    // Can break because we only need the first one
+                    break
                 }
             }
             
