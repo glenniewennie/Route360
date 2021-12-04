@@ -47,7 +47,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         addMapTrackingButton()
         title = "Route360"
         navigationItems()
-        search()
+        configureSearchTable()
+    
     }
     
     // Whenever the view is on screen determine current location
@@ -55,9 +56,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         determineCurrentLocation()
     }
     
-    // creates and implements the search bar
-    func search() {
-        // instantiates the storyboard item
+    func configureSearchTable() {
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         
         // creates searchbar in the top navigation bar
@@ -164,9 +163,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let latitude: String = String(location.coordinate.latitude)
         let longitude: String = String(location.coordinate.longitude)
         let ac = UIAlertController(title: "Start Point", message: "latitude: \(latitude)\n longitude: \(longitude)", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "Find routes", style: .default, handler: { action in
-            self.findRoutes(distance: location.distance, startPoint: location)
-        }))
         present(ac, animated: true)
     }
     
@@ -213,10 +209,31 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         search.start { response, error in
             guard let response = response else {
                 print("Error: \(error?.localizedDescription ?? "Unknown error").")
+
                 return
             }
             
-            // Means there's only one location possible so user doesn't have to choose
+            for item in response.mapItems {
+                // There will only be one location
+                if item.name == locationName {
+                    if let name = item.name, let location = item.placemark.location {
+                        let newStartPoint = StartPoint(title: name, coordinate: location.coordinate, distance: distance)
+                        self.mapView.removeAnnotations(self.mapView.annotations)
+                        // Also delete all old overlays
+                        self.mapView.removeOverlays(self.mapView.overlays)
+                        self.mapView.addAnnotation(newStartPoint)
+                        // Zoom to pin
+                        let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                        let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
+                        self.mapView.setRegion(region, animated: true)
+                        
+                        self.findRoutes(distance: distance, startPoint: newStartPoint)
+                    }
+                }
+            }
+            
+            
+            /*
             if response.mapItems.count == 1 {
                 let item = response.mapItems[0]
                 if let name = item.name, let location = item.placemark.location {
@@ -249,7 +266,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                     }
                 }
                 self.present(ac, animated: true)
+             
             }
+             */
         }
     }
     

@@ -118,14 +118,40 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jwg-3q-t5f">
+                                <rect key="frame" x="191" y="72" width="32" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sYA-Mh-9p1">
+                                <rect key="frame" x="154" y="193" width="97" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jVY-JM-Siw">
+                                <rect key="frame" x="191" y="477" width="32" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="VYm-GU-SV7"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="sYA-Mh-9p1" firstAttribute="centerX" secondItem="VYm-GU-SV7" secondAttribute="centerX" id="Irq-fC-pr9"/>
+                            <constraint firstItem="jwg-3q-t5f" firstAttribute="centerX" secondItem="VYm-GU-SV7" secondAttribute="centerX" id="KU0-FF-9VC"/>
                             <constraint firstItem="KGI-4F-he5" firstAttribute="centerX" secondItem="tCX-Y2-QoX" secondAttribute="centerX" id="UPc-ZY-95U"/>
+                            <constraint firstItem="sYA-Mh-9p1" firstAttribute="top" secondItem="jwg-3q-t5f" secondAttribute="bottom" constant="87" id="YfE-rt-pr9"/>
                             <constraint firstItem="KGI-4F-he5" firstAttribute="top" secondItem="VYm-GU-SV7" secondAttribute="top" id="dmw-1U-v27"/>
+                            <constraint firstItem="jVY-JM-Siw" firstAttribute="centerX" secondItem="VYm-GU-SV7" secondAttribute="centerX" id="nAt-l7-9a5"/>
+                            <constraint firstItem="jVY-JM-Siw" firstAttribute="top" secondItem="sYA-Mh-9p1" secondAttribute="bottom" constant="250" id="vCO-jo-oYY"/>
+                            <constraint firstItem="jwg-3q-t5f" firstAttribute="top" secondItem="KGI-4F-he5" secondAttribute="bottom" constant="7.5" id="xiy-m1-hjY"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="stepOne" destination="jwg-3q-t5f" id="bFI-yg-SNq"/>
+                        <outlet property="stepThree" destination="jVY-JM-Siw" id="wQf-qv-lSc"/>
+                        <outlet property="stepTwo" destination="sYA-Mh-9p1" id="xhU-Ky-Joh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZFX-RR-J0c" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
