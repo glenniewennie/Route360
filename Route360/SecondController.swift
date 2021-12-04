@@ -10,16 +10,15 @@ import UIKit
 class SecondController: UIViewController {
 
     
+    @IBOutlet weak var stepOne: UITextField!
+    @IBOutlet weak var stepTwo: UITextField!
+    @IBOutlet weak var stepThree: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
-        /*
-        let selector = #selector(dismiss as () -> Void)
-        let myViewController = UIViewController()
-        let navController = UINavigationController(rootViewController: myViewController)
-        myViewController.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: selector
-        )
-        self.navigationController!.present(navController, animated: true, completion: nil)
-         */
+        
+        // Instructions
+        stepOne.text = "If you want to find a route from your current location, press the "
+        
     }
 
 }

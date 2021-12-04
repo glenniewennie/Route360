@@ -197,7 +197,25 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 return
             }
             
-            // Means there's only one location possible so user doesn't have to choose
+            for item in response.mapItems {
+                // There will only be one location
+                if item.name == locationName {
+                    if let name = item.name, let location = item.placemark.location {
+                        let newStartPoint = StartPoint(title: name, coordinate: location.coordinate, distance: distance)
+                        self.mapView.removeAnnotations(self.mapView.annotations)
+                        // Also delete all old overlays
+                        self.mapView.removeOverlays(self.mapView.overlays)
+                        self.mapView.addAnnotation(newStartPoint)
+                        // Zoom to pin
+                        let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                        let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
+                        self.mapView.setRegion(region, animated: true)
+                    }
+                }
+            }
+            
+            
+            /*
             if response.mapItems.count == 1 {
                 let item = response.mapItems[0]
                 if let name = item.name, let location = item.placemark.location {
@@ -230,7 +248,9 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                     }
                 }
                 self.present(ac, animated: true)
+             
             }
+             */
         }
     }
     
