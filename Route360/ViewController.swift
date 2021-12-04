@@ -88,7 +88,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             image: UIImage(systemName: "location.fill"),
             style: .done,
             target: self,
-            action: #selector(addTapped)
+            action: #selector(startCurrentLocation)
         )
     }
     
@@ -150,13 +150,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let longitude: String = String(location.coordinate.longitude)
         let ac = UIAlertController(title: "Start Point", message: "latitude: \(latitude)\n longitude: \(longitude)", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "Find routes", style: .default, handler: { action in
-            self.findRoutes(distance: location.distance)
+            self.findRoutes(distance: location.distance, startPoint: location)
         }))
         present(ac, animated: true)
     }
     
     // If user wants to start at current location
-    @objc func addTapped(_ sender: Any) {
+    @objc func startCurrentLocation(_ sender: Any) {
         let ac = UIAlertController(title: "Start at current location", message: nil, preferredStyle: .alert)
         ac.addTextField()
         ac.textFields![0].placeholder = "Enter distance"
@@ -184,7 +184,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         // Also delete all old overlays
         self.mapView.removeOverlays(mapView.overlays)
         mapView.addAnnotation(newStartPoint)
-        findRoutes(distance: distance)
+        findRoutes(distance: distance, startPoint: newStartPoint)
     }
     
     func submit(_ locationName: String, _ distance: Double, _ placemark: MKPlacemark) {
@@ -255,6 +255,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             locationManager.startUpdatingLocation()
         }
         
+        
     }
     
     func addMapTrackingButton() {
@@ -295,24 +296,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
      54.6 miles in x direction is 1 degree longitude
      To provide alternate routes, we find different markers
      */
-    func findRoutes(distance: Double) {
-        for annotation in mapView.annotations {
-            print(annotation.coordinate)
-        }
-        
-//        var requests = [MKDirections.Request]()
-//        var annotationCoordinates = [CLLocationCoordinate2D]()
-//        
-//        for _ in 1...4 {
-//            requests.append(MKDirections.Request())
-//            annotationCoordinates.append(CLLocationCoordinate2D())
-//        }
-        
+    func findRoutes(distance: Double, startPoint: MKAnnotation) {
         // Set the starting point to annotation's location
         let request1 = MKDirections.Request()
         
-        // annotations[0] is user's current location but sometimes it's annotations[1]?
-        let annotationCoordinate1 = self.mapView.annotations[0].coordinate
+        let annotationCoordinate1 = startPoint.coordinate
         request1.source = MKMapItem(placemark: MKPlacemark(coordinate: annotationCoordinate1, addressDictionary: nil))
         let markerLatitude1 = annotationCoordinate1.latitude - distance/(4*69.0)
         let markerLongitude1 = annotationCoordinate1.longitude
@@ -398,16 +386,6 @@ extension ViewController: HandleMapSearch {
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
         annotation.title = placemark.name
-        
-        /*
-        let newStartPoint = StartPoint(title: placemark.name ?? "Error", coordinate: placemark.coordinate)
-        self.mapView.removeAnnotations(self.mapView.annotations)
-        // Also delete all old overlays
-        self.mapView.removeOverlays(self.mapView.overlays)
-        self.mapView.addAnnotation(newStartPoint)
-    
-        */
-        
         
         guard let name = placemark.name else { return }
         

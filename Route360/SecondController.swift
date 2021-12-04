@@ -21,9 +21,6 @@ class SecondController: UIViewController {
         self.navigationController!.present(navController, animated: true, completion: nil)
          */
     }
-    
-    @objc func dismiss() {
-        self.dismiss(animated: true)
-    }
+
 }
 

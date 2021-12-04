@@ -112,9 +112,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="How to Use" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGI-4F-he5">
-                                <rect key="frame" x="36" y="151" width="349" height="265"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How to Use" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KGI-4F-he5">
+                                <rect key="frame" x="163" y="44" width="88" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -122,6 +121,10 @@
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="VYm-GU-SV7"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="KGI-4F-he5" firstAttribute="centerX" secondItem="tCX-Y2-QoX" secondAttribute="centerX" id="UPc-ZY-95U"/>
+                            <constraint firstItem="KGI-4F-he5" firstAttribute="top" secondItem="VYm-GU-SV7" secondAttribute="top" id="dmw-1U-v27"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZFX-RR-J0c" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
