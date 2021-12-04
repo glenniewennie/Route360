@@ -298,6 +298,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             scale.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(scale)
         
+        mapView.setUserTrackingMode(.follow, animated: true)
+        
         //Move compass below tracking button
         mapView.layoutMargins = UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 8)
         
