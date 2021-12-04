@@ -90,14 +90,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             target: self,
             action: #selector(addTapped)
         )
-        /*
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "magnifyingglass"),
-            style: .done,
-            target: self,
-            action: #selector(searchTapped)
-        )
-        */
     }
     
     @objc func infoButtonTapped(_ sender: Any) {
@@ -195,25 +187,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         findRoutes(distance: distance)
     }
     
-    // Runs if user wants to search up a physical location
-    @objc func searchTapped(_ sender: Any) {
-        let ac = UIAlertController(title: "Starting point", message: nil, preferredStyle: .alert)
-        ac.addTextField()
-        ac.addTextField()
-        ac.textFields![0].placeholder = "Enter name of location"
-        ac.textFields![1].placeholder = "Enter distance (in miles)"
-        ac.textFields![1].keyboardType = UIKeyboardType.decimalPad
-        let submitAction = UIAlertAction(title: "Done", style: .default) { [weak self, weak ac] action in
-            guard let locationName = ac?.textFields?[0].text else {return}
-            guard let distance = ac?.textFields?[1].text else {return}
-            guard let doubleDistance = distance.toDouble() else { return }
-            self?.submit(locationName, doubleDistance)
-        }
-        ac.addAction(submitAction)
-        present(ac, animated: true)
-    }
-    
-    func submit(_ locationName: String, _ distance: Double) {
+    func submit(_ locationName: String, _ distance: Double, _ placemark: MKPlacemark) {
         let searchRequest = MKLocalSearch.Request()
         searchRequest.naturalLanguageQuery = locationName
         let search = MKLocalSearch(request: searchRequest)
@@ -232,6 +206,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                     // Also delete all old overlays
                     self.mapView.removeOverlays(self.mapView.overlays)
                     self.mapView.addAnnotation(newStartPoint)
+                    // Zoom to pin
+                    let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                    let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
+                    self.mapView.setRegion(region, animated: true)
                 }
             } else {
                 let ac = UIAlertController(title: "Choose your location", message: nil, preferredStyle: .actionSheet)
@@ -244,6 +222,10 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                             self.mapView.removeOverlays(self.mapView.overlays)
                             self.mapView.removeAnnotations(self.mapView.annotations)
                             self.mapView.addAnnotation(newStartPoint)
+                            // Zoom to pin
+                            let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+                            let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
+                            self.mapView.setRegion(region, animated: true)
                         }))
                     }
                 }
@@ -417,21 +399,15 @@ extension ViewController: HandleMapSearch {
         annotation.coordinate = placemark.coordinate
         annotation.title = placemark.name
         
-        
+        /*
         let newStartPoint = StartPoint(title: placemark.name ?? "Error", coordinate: placemark.coordinate)
         self.mapView.removeAnnotations(self.mapView.annotations)
         // Also delete all old overlays
         self.mapView.removeOverlays(self.mapView.overlays)
         self.mapView.addAnnotation(newStartPoint)
     
-        let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
-        let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
-        mapView.setRegion(region, animated: true)
+        */
         
-        addDistance(placemark: placemark)
-    }
-    
-    func addDistance(placemark: MKPlacemark) {
         
         guard let name = placemark.name else { return }
         
@@ -444,8 +420,9 @@ extension ViewController: HandleMapSearch {
             guard let locationName = placemark.name else {return}
             guard let distance = ac?.textFields?[0].text else {return}
             guard let doubleDistance = distance.toDouble() else { return }
-            self?.submit(locationName, doubleDistance)
+            self?.submit(locationName, doubleDistance, placemark)
         }
+        
         ac.addAction(submitAction)
         present(ac, animated: true)
     }
