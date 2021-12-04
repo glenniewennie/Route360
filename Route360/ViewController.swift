@@ -114,10 +114,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         controller.navigationItem.rightBarButtonItem?.tintColor = .label
         
         // bring up information page
-        self.navigationController!.present(
-            navController,
-            animated: true,
-            completion: nil)
+        self.navigationController!.present(navController, animated: true, completion: nil)
     }
     
     // dismiss view controller; activated by when the done button is tapped
@@ -422,6 +419,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             guard let unwrappedResponse = response else { return }
             // Iterate through array and add each route to the map
             for route in unwrappedResponse.routes {
+                //route.polyline.size.width = 10
                 self.mapView.addOverlay(route.polyline)
                 self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
             }

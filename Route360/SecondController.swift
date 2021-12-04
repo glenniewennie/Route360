@@ -17,6 +17,9 @@ class SecondController: UIViewController {
         super.viewDidLoad()
         
         // Instructions
+       // label = [[UILabel alloc] initWithFrame: CGRect(60, 30, 200, 12)]
+        //label.textAlignment = NSTextAlignment.center
+        
         stepOne.text = "If you want to find a route from your current location, press the "
         
     }
