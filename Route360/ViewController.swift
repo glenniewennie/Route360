@@ -9,7 +9,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-
+// used to define the functions used in handling map search
 protocol HandleMapSearch {
     func dropPinZoomIn(placemark: MKPlacemark)
 }
@@ -47,33 +47,38 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         addMapTrackingButton()
         title = "Route360"
         navigationItems()
-    
         search()
-    
     }
     
+    // Whenever the view is on screen determine current location
     override func viewDidAppear(_ animated: Bool) {
         determineCurrentLocation()
     }
     
+    // creates and implements the search bar
     func search() {
+        // instantiates the storyboard item
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
+        
+        // creates searchbar in the top navigation bar
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
         resultSearchController?.searchResultsUpdater = locationSearchTable
         
+        // format searchbar to fit correctly and have correct placeholder
         let searchBar = resultSearchController!.searchBar
         searchBar.sizeToFit()
         searchBar.placeholder = "Find Starting Point"
         navigationItem.titleView = resultSearchController?.searchBar
-        
         resultSearchController?.hidesNavigationBarDuringPresentation = false
         definesPresentationContext = true
         
+        // gives the search table access to the current location of the map
         locationSearchTable.mapView = mapView
         locationSearchTable.handleMapSearchDelegate = self
         
     }
     
+    // navigation buttons in the navigation bar
     private func navigationItems() {
         navigationController?.navigationBar.tintColor = .label
         navigationItem.rightBarButtonItems = [
@@ -92,21 +97,31 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         )
     }
     
+    // when info button is selected brings up secondary view controller with instructions for app use
     @objc func infoButtonTapped(_ sender: Any) {
+        // instantiate SecondContoller from storyboard
         let story = UIStoryboard(name: "Main", bundle: nil)
         let controller = story.instantiateViewController(identifier: "SecondController")
-        //Code for exiting info view
-        let selector = #selector(dismiss as () -> Void)
         let navController = UINavigationController(rootViewController: controller)
+        
+        // when done button is tapped, call dismiss function
+        let selector = #selector(dismiss as () -> Void)
+        
+        // add navigation button (done button) to the info view
         controller.navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done,
             target: self,
             action: selector)
         controller.navigationItem.rightBarButtonItem?.tintColor = .label
-        self.navigationController!.present(navController, animated: true, completion: nil)
         
+        // bring up information page
+        self.navigationController!.present(
+            navController,
+            animated: true,
+            completion: nil)
     }
     
+    // dismiss view controller; activated by when the done button is tapped
     @objc func dismiss() {
         self.dismiss(animated: true)
     }
@@ -157,7 +172,11 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     // If user wants to start at current location
     @objc func startCurrentLocation(_ sender: Any) {
-        let ac = UIAlertController(title: "Start at current location", message: nil, preferredStyle: .alert)
+        let ac = UIAlertController(
+            title: "Start at current location",
+            message: nil,
+            preferredStyle: .alert)
+        
         ac.addTextField()
         ac.textFields![0].placeholder = "Enter distance"
         ac.textFields![0].keyboardType = UIKeyboardType.decimalPad
@@ -234,54 +253,70 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         }
     }
     
+    // When location changes, update currentLocation
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         do { currentLocation = locations.last }
     }
     
+    // if location fails to update, throw an error
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print("Error - locationManager: \(error.localizedDescription)")
     }
 
+    // finds the current location of the ios device
     func determineCurrentLocation() {
         mapView.delegate = self
+        
+        // show current location dot on map
         mapView.showsUserLocation = true
         locationManager = CLLocationManager()
         locationManager.delegate = self
+        
+        // best accuracy for current location
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         
-        //Check for Location Services
+        // check that Location Services are on an authorized
         if CLLocationManager.locationServicesEnabled() {
             locationManager.requestWhenInUseAuthorization()
             locationManager.startUpdatingLocation()
         }
-        
-        
     }
     
+    // Allows user to select how the map follows device location/orientation
     func addMapTrackingButton() {
-        
         let trackButton = MKUserTrackingButton(mapView: mapView)
-            trackButton.tintColor = .label
-            //trackButton.layer.backgroundColor = UIColor(white: 1, alpha: 0.8).cgColor
-            trackButton.backgroundColor = .systemBackground.withAlphaComponent(0.7)
-            trackButton.layer.borderColor = UIColor.label.cgColor
-            trackButton.layer.borderWidth = 1
-            trackButton.layer.cornerRadius = 5
-            trackButton.translatesAutoresizingMaskIntoConstraints = false
-            trackButton.widthAnchor.constraint(equalToConstant: 45).isActive = true
-            trackButton.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        // set size and color attributes for the track button
+        trackButton.tintColor = .label
+        trackButton.backgroundColor = .systemBackground.withAlphaComponent(0.7)
+        trackButton.layer.borderColor = UIColor.label.cgColor
+        trackButton.layer.borderWidth = 1
+        trackButton.layer.cornerRadius = 5
+        trackButton.translatesAutoresizingMaskIntoConstraints = false
+        trackButton.widthAnchor.constraint(equalToConstant: 45).isActive = true
+        trackButton.heightAnchor.constraint(equalToConstant: 45).isActive = true
+        
+        // add trackButton to the screen as a subview
         mapView.addSubview(trackButton)
         
+        // shows scale of the map when zooming
         let scale = MKScaleView(mapView: mapView)
             scale.legendAlignment = .trailing
             scale.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(scale)
         
+        // add scale indication to screen as a subview
+        view.addSubview(scale)
+        
+        // set default tracking mode when app starts
         mapView.setUserTrackingMode(.follow, animated: true)
         
-        //Move compass below tracking button
-        mapView.layoutMargins = UIEdgeInsets(top: 60, left: 0, bottom: 0, right: 8)
+        // move compass below tracking button
+        mapView.layoutMargins = UIEdgeInsets(
+            top: 60,
+            left: 0,
+            bottom: 0,
+            right: 8)
         
+        // set tracking button and scale diagram to correct location on screen
         NSLayoutConstraint.activate([trackButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
                                         trackButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -12),
                                         scale.trailingAnchor.constraint(equalTo: trackButton.leadingAnchor, constant: -10),
@@ -372,33 +407,39 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 self.mapView.setVisibleMapRect(route.polyline.boundingMapRect, animated: true)
             }
         }
-         
     }
-    
-    
 }
 
 extension ViewController: HandleMapSearch {
     func dropPinZoomIn(placemark: MKPlacemark){
-        // cache the pin
+        // cache the entered pin
         selectedPin = placemark
+        
         // clear existing pins
         let annotation = MKPointAnnotation()
         annotation.coordinate = placemark.coordinate
         annotation.title = placemark.name
         
+        // find name of new pin
         guard let name = placemark.name else { return }
         
-        let ac = UIAlertController(title: "Start at " + name, message: nil, preferredStyle: .alert)
+        // ask user for input distance
+        let ac = UIAlertController(
+            title: "Start at " + name,
+            message: nil,
+            preferredStyle: .alert)
         ac.addTextField()
         ac.textFields![0].placeholder = "Enter distance"
         ac.textFields![0].keyboardType = UIKeyboardType.decimalPad
         
-        let submitAction = UIAlertAction(title: "Done", style: .default) { [weak self, weak ac] action in
-            guard let locationName = placemark.name else {return}
-            guard let distance = ac?.textFields?[0].text else {return}
-            guard let doubleDistance = distance.toDouble() else { return }
-            self?.submit(locationName, doubleDistance, placemark)
+        
+        let submitAction = UIAlertAction(
+            title: "Done",
+            style: .default) { [weak self, weak ac] action in
+                guard let locationName = placemark.name else {return}
+                guard let distance = ac?.textFields?[0].text else {return}
+                guard let doubleDistance = distance.toDouble() else { return }
+                self?.submit(locationName, doubleDistance, placemark)
         }
         
         ac.addAction(submitAction)
