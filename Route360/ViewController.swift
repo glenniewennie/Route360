@@ -82,20 +82,22 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 style: .done,
                 target: self,
                 action: #selector(infoButtonTapped)
-            ),
-            UIBarButtonItem(
-                image: UIImage(systemName: "location.fill"),
-                style: .done,
-                target: self,
-                action: #selector(addTapped)
             )
         ]
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "location.fill"),
+            style: .done,
+            target: self,
+            action: #selector(addTapped)
+        )
+        /*
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "magnifyingglass"),
             style: .done,
             target: self,
             action: #selector(searchTapped)
         )
+        */
     }
     
     @objc func infoButtonTapped(_ sender: Any) {
