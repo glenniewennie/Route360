@@ -47,8 +47,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         addMapTrackingButton()
         title = "Route360"
         navigationItems()
-    
-        search()
+        configureSearchTable()
     
     }
     
@@ -56,7 +55,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         determineCurrentLocation()
     }
     
-    func search() {
+    func configureSearchTable() {
         let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
         resultSearchController = UISearchController(searchResultsController: locationSearchTable)
         resultSearchController?.searchResultsUpdater = locationSearchTable
@@ -149,9 +148,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let latitude: String = String(location.coordinate.latitude)
         let longitude: String = String(location.coordinate.longitude)
         let ac = UIAlertController(title: "Start Point", message: "latitude: \(latitude)\n longitude: \(longitude)", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "Find routes", style: .default, handler: { action in
-            self.findRoutes(distance: location.distance, startPoint: location)
-        }))
         present(ac, animated: true)
     }
     
@@ -194,6 +190,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         search.start { response, error in
             guard let response = response else {
                 print("Error: \(error?.localizedDescription ?? "Unknown error").")
+
                 return
             }
             
@@ -210,6 +207,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                         let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
                         let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
                         self.mapView.setRegion(region, animated: true)
+                        
+                        self.findRoutes(distance: distance, startPoint: newStartPoint)
                     }
                 }
             }
