@@ -6,12 +6,6 @@
 	<array>
 		<string>logo.png</string>
 	</array>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string></string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>allow app to know your location once</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>allow app to always know your location</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

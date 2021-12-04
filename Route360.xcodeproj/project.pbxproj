@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3C150D8F275AC80A006D0951 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C150D8E275AC80A006D0951 /* LocationSearchTable.swift */; };
 		3C9E893A2755FB1500A9032F /* Location.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 3C9E89392755FAF300A9032F /* Location.gpx */; };
 		3C9E893E2756DA1900A9032F /* SecondController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E893D2756DA1800A9032F /* SecondController.swift */; };
 		543A6F1E275582E600636358 /* StartPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543A6F1D275582E600636358 /* StartPoint.swift */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3C150D8E275AC80A006D0951 /* LocationSearchTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 		3C9E89392755FAF300A9032F /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		3C9E893D2756DA1800A9032F /* SecondController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondController.swift; sourceTree = "<group>"; };
 		543A6F1D275582E600636358 /* StartPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartPoint.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				54C81EF1275575420025330D /* ViewController.swift */,
 				543A6F1D275582E600636358 /* StartPoint.swift */,
 				54C81EF3275575420025330D /* Main.storyboard */,
+				3C150D8E275AC80A006D0951 /* LocationSearchTable.swift */,
 				3C9E893D2756DA1800A9032F /* SecondController.swift */,
 				54C81EF6275575450025330D /* Assets.xcassets */,
 				54C81EF8275575450025330D /* LaunchScreen.storyboard */,
@@ -271,6 +274,7 @@
 				54C81EF2275575420025330D /* ViewController.swift in Sources */,
 				54C81EEE275575420025330D /* AppDelegate.swift in Sources */,
 				54C81EF0275575420025330D /* SceneDelegate.swift in Sources */,
+				3C150D8F275AC80A006D0951 /* LocationSearchTable.swift in Sources */,
 				543A6F1E275582E600636358 /* StartPoint.swift in Sources */,
 				3C9E893E2756DA1900A9032F /* SecondController.swift in Sources */,
 			);
@@ -455,9 +459,13 @@
 				DEVELOPMENT_TEAM = D8AQVTV8A7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Route360/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "allow app to always know your location";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "allow app to know your location once";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -484,9 +492,13 @@
 				DEVELOPMENT_TEAM = D8AQVTV8A7;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Route360/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "allow app to always know your location";
+				INFOPLIST_KEY_NSLocationAlwaysUsageDescription = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "allow app to know your location once";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

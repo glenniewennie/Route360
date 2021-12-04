@@ -10,6 +10,10 @@ import MapKit
 import CoreLocation
 
 
+protocol HandleMapSearch {
+    func dropPinZoomIn(placemark: MKPlacemark)
+}
+
 // Used to convert Strings to Doubles
 extension String {
     func toDouble() -> Double? {
@@ -34,16 +38,17 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     @IBOutlet weak var mapView: MKMapView!
     var locationManager: CLLocationManager!
     var currentLocation: CLLocation?
+    var resultSearchController: UISearchController? = nil
+    var selectedPin: MKPlacemark? = nil
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         addMapTrackingButton()
-        
         title = "Route360"
         navigationItems()
     
-        let pennypacker = StartPoint(title: "Pennypacker", coordinate: CLLocationCoordinate2D(latitude: 42.37201109033051, longitude: -71.11369242), distance: 4)
-        mapView.addAnnotation(pennypacker)
+        search()
     
     }
     
@@ -51,6 +56,23 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         determineCurrentLocation()
     }
     
+    func search() {
+        let locationSearchTable = storyboard!.instantiateViewController(withIdentifier: "LocationSearchTable") as! LocationSearchTable
+        resultSearchController = UISearchController(searchResultsController: locationSearchTable)
+        resultSearchController?.searchResultsUpdater = locationSearchTable
+        
+        let searchBar = resultSearchController!.searchBar
+        searchBar.sizeToFit()
+        searchBar.placeholder = "Find Starting Point"
+        navigationItem.titleView = resultSearchController?.searchBar
+        
+        resultSearchController?.hidesNavigationBarDuringPresentation = false
+        definesPresentationContext = true
+        
+        locationSearchTable.mapView = mapView
+        locationSearchTable.handleMapSearchDelegate = self
+        
+    }
     
     private func navigationItems() {
         navigationController?.navigationBar.tintColor = .label
@@ -62,7 +84,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
                 action: #selector(infoButtonTapped)
             ),
             UIBarButtonItem(
-                barButtonSystemItem: .add,
+                image: UIImage(systemName: "location.fill"),
+                style: .done,
                 target: self,
                 action: #selector(addTapped)
             )
@@ -77,10 +100,23 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     
     @objc func infoButtonTapped(_ sender: Any) {
         let story = UIStoryboard(name: "Main", bundle: nil)
-        let controller = story.instantiateViewController(identifier: "SecondController") 
-        self.present(controller, animated: true, completion: nil)
+        let controller = story.instantiateViewController(identifier: "SecondController")
+        //Code for exiting info view
+        let selector = #selector(dismiss as () -> Void)
+        let navController = UINavigationController(rootViewController: controller)
+        controller.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .done,
+            target: self,
+            action: selector)
+        controller.navigationItem.rightBarButtonItem?.tintColor = .label
+        self.navigationController!.present(navController, animated: true, completion: nil)
+        
     }
     
+    @objc func dismiss() {
+        self.dismiss(animated: true)
+    }
+
     
     // This is called when routes need to be drawn
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
@@ -130,6 +166,8 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let ac = UIAlertController(title: "Start at current location", message: nil, preferredStyle: .alert)
         ac.addTextField()
         ac.textFields![0].placeholder = "Enter distance"
+        ac.textFields![0].keyboardType = UIKeyboardType.decimalPad
+
  
         let submitAction = UIAlertAction(title: "Done", style: .default) { [weak self, weak ac] action in
             guard let distance = ac?.textFields?[0].text else { return }
@@ -162,6 +200,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         ac.addTextField()
         ac.textFields![0].placeholder = "Enter name of location"
         ac.textFields![1].placeholder = "Enter distance (in miles)"
+        ac.textFields![1].keyboardType = UIKeyboardType.decimalPad
         let submitAction = UIAlertAction(title: "Done", style: .default) { [weak self, weak ac] action in
             guard let locationName = ac?.textFields?[0].text else {return}
             guard let distance = ac?.textFields?[1].text else {return}
@@ -212,16 +251,13 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        defer { currentLocation = locations.last }
+        do { currentLocation = locations.last }
         
-        if currentLocation == nil {
-            // Zoom to user location
-            if let userLocation = locations.last {
-                let viewRegion = MKCoordinateRegion(center: userLocation.coordinate, latitudinalMeters: 2000, longitudinalMeters: 2000)
-                mapView.setRegion(viewRegion, animated: true)
-                
-            }
-        }
+          /*  let location = locations.first
+            let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+            let region = MKCoordinateRegion(center: location!.coordinate, span: span)
+            mapView.setRegion(region, animated: true)
+           */
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
@@ -372,5 +408,27 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
     
     
+}
+
+extension ViewController: HandleMapSearch {
+    func dropPinZoomIn(placemark: MKPlacemark){
+        // cache the pin
+        selectedPin = placemark
+        // clear existing pins
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = placemark.coordinate
+        annotation.title = placemark.name
+        
+        
+        let newStartPoint = StartPoint(title: placemark.name ?? "Error", coordinate: placemark.coordinate)
+        self.mapView.removeAnnotations(self.mapView.annotations)
+        // Also delete all old overlays
+        self.mapView.removeOverlays(self.mapView.overlays)
+        self.mapView.addAnnotation(newStartPoint)
+    
+        let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
+        let region = MKCoordinateRegion(center: placemark.coordinate, span: span)
+        mapView.setRegion(region, animated: true)
+    }
 }
 

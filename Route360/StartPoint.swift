@@ -18,5 +18,11 @@ class StartPoint: NSObject, MKAnnotation {
        self.coordinate = coordinate
        self.distance = distance
     }
+    
+    init(title: String, coordinate: CLLocationCoordinate2D) {
+        self.title = title
+        self.coordinate = coordinate
+        self.distance = 0.0
+    }
 
 }
