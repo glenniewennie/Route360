@@ -178,7 +178,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             preferredStyle: .alert)
         
         ac.addTextField()
-        ac.textFields![0].placeholder = "Enter distance"
+        ac.textFields![0].placeholder = "Enter distance (in miles)"
         ac.textFields![0].keyboardType = UIKeyboardType.decimalPad
 
         let submitAction = UIAlertAction(title: "Done", style: .default) { [weak self, weak ac] action in
@@ -410,7 +410,7 @@ extension ViewController: HandleMapSearch {
             message: nil,
             preferredStyle: .alert)
         ac.addTextField()
-        ac.textFields![0].placeholder = "Enter distance"
+        ac.textFields![0].placeholder = "Enter distance (in miles)"
         ac.textFields![0].keyboardType = UIKeyboardType.decimalPad
         
         

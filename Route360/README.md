@@ -4,11 +4,10 @@ This project is written using the language Swift. The code should be compiled us
 
 Compilation:
     1. Ensure you are on macOS Big Sur 11.3 or later.
-    2. Install Xcode v13.0 or later.
-    3. Install Simulator v13.0 or later.
-    4. Unzip the Route360 project file.
-    5. Double-click file "Route360.xcodeproj".
-        a. This will open the project in Xcode.
+    2. Install Xcode v13.0 or later via the App Store.
+    3. Unzip the Route360 project file.
+    4. Double-click file "Route360.xcodeproj".
+        a. If prompted select "Trust & Open" and then the project will open in Xcode.
         b. The project file also contains all of the configurations that are needed for running the project in the simulator.
 
 
@@ -19,7 +18,8 @@ Running Route360 in a Simulator:
     3. In the menu bar select Product -> Run.
         a. This will open the iOS simulator app and run the code.
     4. In the simulator, when prompted select "allow while using app" to enable location services.
-    5. By default the location of the simulator is set to Harvard University per the .gpx file attached to the project.
+    5. By default the location of the simulator should be set to Harvard University per the .gpx file attached to the project.
+        a. If the location of the simulator is not Harvard University, try rerunning the program 1-3 more times by selecting Product -> Run (and selecting "Replace" when prompted)
         a. In order to change the spoofed location, in the menu bar, select Debug -> Simulate Location -> Select City.
             i. Be aware that if you want to simulate locations other than Harvard University you will need to change this attribute each time the code is run, or change the project scheme setting as described in step 9 of running the app on your iPhone.
         b. When running the app on your own iPhone, the app will use built-in GPS (instructions below).
@@ -34,22 +34,24 @@ Running Route360 on your iPhone (more difficult):
     5. Now in the Xcode file viewer select the root folder for the project (it has a blue icon next to it).
     6. Using the tabs at the top of the window select "Signing & Capabilities" to the right of "General".
     7. Select a "Personal Team".
-        a. If no team is listed, select "Add an Account" and sign in using your Apple ID account. Then select the new Personal Team.
+        a. If no team is listed, select "Add an Account" and sign in using your Apple ID. Then select the newly created Personal Team.
     8. Now on the same page choose a "Bundle Identifier".
         a. This can be any phrase that has not been taken yet (e.g. Lastname-Route360). Then press the return key to confirm it is valid.
     9. Now select Product -> Scheme -> Edit Scheme.
         a. On the prompt that comes up select the "Run" tab on the left and the "Options" tab in the center. Then set the "Default Location" to None.
-                i. This will ensure that the app uses the onboard GPS instead of the spoofed GPS location used by the simulator.
-    9. Now in the menu bar select Product -> Run
-    10. On your iPhone, go to the Settings app and select General -> VPN & Device Management. Select the listing that starts with "Apple Development:". Now tap Trust and confirm if necessary.
-    11. Now go back to Xcode and in the menu bar select Product -> Run.
+                i. This will ensure that the app uses the onboard GPS of your phone instead of the spoofed GPS location used by the simulator.
+    10. Now in the menu bar select Product -> Run
+    11. When prompted on your Mac, enter you password and select "Always Allow"
+    12. If a prompt comes up on your iPhone regarding an unknown developer select Cancel. In Xcode a warning will pop up as well, this can be dismissed. 
+    13. On your iPhone, go to the Settings app and select General -> VPN & Device Management. Select the listing that starts with "Apple Development:". Now tap Trust and confirm if necessary.
+    14. Now go back to Xcode and in the menu bar select Product -> Run.
         a. After a few moments, the app Route360 will install and launch on your iPhone.
   
   
         
 How to Use Route360:
 
-Route360 is an app designed to generate a running route of a specified distance using either your current location or a desired starting location. This section will be broken into categories by functionality. We will work our way from right to left across the UI and end with a few general comments.
+Route360 is an app designed to generate a running route of a specified distance using either your current location or a desired starting location. This section will be broken into categories by functionality. We will work our way from left to right across the UI and end with a few general comments.
 
 1. Generate Running Route from Current Location:
     a. Select the location arrow in the top left of the UI.
