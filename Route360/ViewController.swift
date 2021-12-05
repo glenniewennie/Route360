@@ -21,18 +21,6 @@ extension String {
      }
 }
 
-// Used to generate a random color - see rendererFor method
-extension UIColor {
-    static func random() -> UIColor {
-        return UIColor(
-            red: .random(in: 0...1),
-            green: .random(in: 0...1),
-            blue: .random(in: 0...1),
-            alpha: 1.0
-        )
-    }
-}
-
 class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
@@ -125,7 +113,6 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
         // Generate a random color solely to be able to distinguish lines
         renderer.strokeColor = UIColor(hue: 0.5472, saturation: 1, brightness: 1, alpha: 1.0)
-        
         return renderer
     }
     

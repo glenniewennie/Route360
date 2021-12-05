@@ -1,30 +1,34 @@
-#  DESIGN.md #
+# DESIGN.md #
 
-
-Example design - this is the design title
-Author: < Name and Discord nic >
-
-Primary assignee: < Glen Liu and Joshua Halberstadt >
-
+Route360
+Author: < Glen Liu and Joshua Halberstadt >
 Created: < November 29, 2021 >
 
-Problem Description
-(1 paragraph) What are we doing and why? What problem are you trying to solve? What are the goals and NON-goals? Please make the objective understandable for someone unfamiliar with this project by including the necessary context, but keep it short. Elaborate on the details below in the Background and Requirements sections.
+## Implementation ##
+Our app was implemented in the Xcode IDE using the language Swift. From a high-level perspective, we made heavy use of the Swift framework "MapKit" which allowed us to add our broad range of functionality, from finding a location through a search bar or determining user distance. We also built our app ontop the traditional framework of "UIKit," utilizing certain objects like "UILabel", "UIImage", and "UIColor."
 
-Background and References
-(1-2 paragraphs) What background context is necessary? You should mention related work inside and outside of OpenBMC. What other Open Source projects are trying to solve similar problems? Try to use links or references to external sources (other docs or Wikipedia), rather than writing your own explanations. Please include document titles so they can be found when links go bad. Include a glossary if necessary. Note: this is background; do not write about your design, specific requirements details, or ideas to solve problems here.
+### View Controllers ###
+In terms of our UI, we have three view controllers, which are essentially different screens that can come up in the app. 
+ViewController is the main view controller. It houses the map interface complete with a navigation controller that features a couple of navigation items, including the info circle and the location fill. This is where the user will find his location, where they can read more about the app, or search for another location. 
+SecondController is what is shown when the user taps the i button in the navigationController. It details instructions for how to use the app. 
+Lastly, LocationSearchTable is a UITableViewController which holds search results. So, when the user begins typing in the search bar in ViewController, LocationSearchTable will return possible matches of places. The user can then select on one to place an annotation at that location. 
 
-Requirements
-(2-5 paragraphs) What are the constraints for the problem you are trying to solve? Who are the users of this solution? What is required to be produced? What is the scope of this effort? Your job here is to quickly educate others about the details you know about the problem space, so they can help review your implementation. Roughly estimate relevant details. How big is the data? What are the transaction rates? Bandwidth?
+### Classes ###
+Aside from our view controllers, we have one main class: StartPoint, which, most importantly, extends from the MKAnnotation class. StartPoint has a couple of attributes, namely title, coordinate, and distance. Notice that coordinate is a special CLLocationCoordinate2D object, which itself has its own properties like longitude and latitude. 
+The rest of the classes, i.e AppDelegate and SceneDelegate, all come pre-coded with the initial package of an Xcode project. They provide internal communication within the app, but because they aren't necessary towards understanding our code, I'll omit discussing them. 
 
-Proposed Design
-(2-5 paragraphs) A short and sweet overview of your implementation ideas. If you have alternative solutions to a problem, list them concisely in a bullet list. This should not contain every detail of your implementation, and do not include code. Use a diagram when necessary. Cover major structural elements in a very succinct manner. Which technologies will you use? What new components will you write? What technologies will you use to write them?
+### The Code ###
+Our code frequently uses an object called an "annotation", which is specifically an MKAnnotation object. Broadly speaking, annotations hold data that you want to display on the UI of the map. What we'll frequently do in our code is create an annotation and then type-cast is as an object of the class "StartPoint." Further, it's important to note that because StartPoints extend from the MKAnnotation class, we are able to pass in a StartPoint object as a parameter for a function that usually takes in a MKAnnotation object. On the flip side, you will also see us check that an MKAnnotation is a StartPoint before performing some function because the only annotations we want to see on the map are StartPoints from where the user can draw routes. 
 
-Alternatives Considered
-(2 paragraphs) Include alternate design ideas here which you are leaning away from. Elaborate on why a design was considered and why the idea was rejected. Show that you did an extensive survey about the state of the art. Compares your proposal's features & limitations to existing or similar solutions.
+### Important Functions Explained ###
+submit() is an example of method overloading, in that we have multiple functions with the name submit(), however, they each take in different parameters. That being said, submit is always run when the user clicks some sort "Done" button in order to begin finding routes from a location, whether that location be the user's current one or a different StartPoint. Then, the computer will always do two things: it will first delete all old annotations (excluding the user's icon that indicates his current location) and overlays (which are routes drawn), and then it will add a new annotation (either from the user's current location or a different StartPoint) and call findRoutes().
+findRoutes() is the function that finds a loop from and to a certain location. It is the bulk of our app and is explained below.
 
-Impacts
-API impact? Security impact? Documentation impact? Performance impact? Developer impact? Upgradability impact?
-
-Testing
-How will this be tested? How will this feature impact CI testing?
+### findRoutes() - Route-drawing Algorithm ###
+Our current algorithm for determining a loop is quite simple. Given a distance d, we find a marker d/4 away, find another marker d/4 away from that one, find a last one d/4 away, then find a route back to the original StartPoint. In effect, we are drawing a rectangle, where the difference in coordinates from one consecutive marker to another is either a change in longitude coordinates equal to d/4 or a change in latitude coordinates equal to d/4. 
+Note:
+     69 miles in y direction is 1 degree latitude
+     54.6 miles in x direction is 1 degree longitude
+     
+### Other functions ###
+A cursory look through our code will tell you that there are many other functions that I have chosen not to discuss here. Most likely, the reason I'm not discussing it is because the function's usage is easily understood either by looking at its name and formal parameters or by taking a quick look at the code and following it intuitively. 
