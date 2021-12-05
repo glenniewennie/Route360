@@ -157,7 +157,16 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         guard let location = view.annotation as? StartPoint else {return}
         let latitude: String = String(location.coordinate.latitude)
         let longitude: String = String(location.coordinate.longitude)
-        let ac = UIAlertController(title: "Start Point", message: "latitude: \(latitude)\n longitude: \(longitude)", preferredStyle: .alert)
+        // Show user latitude and longitude of starting point
+        let ac = UIAlertController(
+            title: "Start Point",
+            message: "latitude: \(latitude)\n longitude: \(longitude)",
+            preferredStyle: .alert)
+        // Add done button so user can leave the alert
+        let doneAction = UIAlertAction(title: "Done", style: .default) {_ in
+        }
+        
+        ac.addAction(doneAction)
         present(ac, animated: true)
     }
     
