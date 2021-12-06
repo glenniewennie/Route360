@@ -1,6 +1,6 @@
 Route360 README file:
 
-This project is written using the language Swift. The code should be compiled using Xcode 13.0 or later on macOS. In order to get the code running, follow these steps.
+This project is written using the language Swift. The code should be compiled using Xcode 13.0 or later on macOS. A short video presentation of the app can be found here: https://youtu.be/Tc40LsJ3bLI. In order to get the code running, follow these steps.
 
 Compilation:
     1. Ensure you are on macOS Big Sur 11.3 or later.
@@ -101,7 +101,7 @@ Route360 is an app designed to generate a running route of a specified distance 
             
             
 4. Anticipated Questions:
-    a. How do I run this code on a Windows machine?
+    a. How do I comile and run this code on a Windows machine?
         i. Unfortunately, iOS apps written in Swift do not easily run on any Windows IDE. We recommend finding a colleague who would be willing to let you borrow a Mac in order to run and test the code in Xcode using MacOS.
         
     b. Will the app accidentally make me run on a highway?

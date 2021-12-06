@@ -357,6 +357,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
             // Iterate through array and add each route to the map
             for route in unwrappedResponse.routes {
                 self.mapView.addOverlay(route.polyline)
+
             }
         }
         

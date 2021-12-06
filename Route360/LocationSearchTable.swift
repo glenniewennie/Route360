@@ -37,7 +37,6 @@ class LocationSearchTable : UITableViewController {
         )
         return addressLine
     }
-    
 }
 
 extension LocationSearchTable : UISearchResultsUpdating {
