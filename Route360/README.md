@@ -101,7 +101,7 @@ Route360 is an app designed to generate a running route of a specified distance 
             
             
 4. Anticipated Questions:
-    a. How do I comile and run this code on a Windows machine?
+    a. How do I compile and run this code on a Windows machine?
         i. Unfortunately, iOS apps written in Swift do not easily run on any Windows IDE. We recommend finding a colleague who would be willing to let you borrow a Mac in order to run and test the code in Xcode using MacOS.
         
     b. Will the app accidentally make me run on a highway?
