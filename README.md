@@ -1,6 +1,6 @@
 # Route360
 
-Route360 is an app designed to generate a running route of a specified distance using either your current location or a desired starting location. This section will be broken into categories by functionality. We will work our way from left to right across the UI and end with a few general comments.
+Route360 is an app designed to generate a running route of a specified distance using either your current location or a desired starting location. This section will be broken into categories by functionality. We will work our way from left to right across the UI.
 
 1. Generate Running Route from Current Location:
     a. Select the location arrow in the top left of the UI.
