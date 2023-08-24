@@ -4,4 +4,7 @@ Route360 is an iOS app that generates a running loop of a specified distance tha
 
 This project was created by Glen Liu and Joshua Halberstadt as our CS50 final project. The `Documentation` folder contains markdown documents for this project's final report, which includes a report on this app's technical implementation and instructions for running the app on your own simulator or device. 
 
-    
+### Example Route
+Below is a snapshot of the UI after generating a 1.5 mile loop starting from Harvard's Science Center.
+
+<img src="ExampleRoute.png" alt="example-route" width="300"/>
