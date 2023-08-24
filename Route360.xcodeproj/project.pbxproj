@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3C150D8F275AC80A006D0951 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C150D8E275AC80A006D0951 /* LocationSearchTable.swift */; };
 		3C9E893E2756DA1900A9032F /* SecondController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C9E893D2756DA1800A9032F /* SecondController.swift */; };
+		54113F712A96ECF200797083 /* ExampleRoute.png in Resources */ = {isa = PBXBuildFile; fileRef = 54113F702A96ECF200797083 /* ExampleRoute.png */; };
 		543A6F1E275582E600636358 /* StartPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543A6F1D275582E600636358 /* StartPoint.swift */; };
 		54C81EEE275575420025330D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C81EED275575420025330D /* AppDelegate.swift */; };
 		54C81EF0275575420025330D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C81EEF275575420025330D /* SceneDelegate.swift */; };
@@ -39,6 +40,7 @@
 		3C150D8E275AC80A006D0951 /* LocationSearchTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTable.swift; sourceTree = "<group>"; };
 		3C2E4632275C59740070448A /* Harvard University.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = "Harvard University.gpx"; sourceTree = "<group>"; };
 		3C9E893D2756DA1800A9032F /* SecondController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecondController.swift; sourceTree = "<group>"; };
+		54113F702A96ECF200797083 /* ExampleRoute.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ExampleRoute.png; sourceTree = "<group>"; };
 		542B5076275C333E00C756CE /* DESIGN.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = DESIGN.md; sourceTree = "<group>"; };
 		542B5077275C346D00C756CE /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		543A6F1D275582E600636358 /* StartPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartPoint.swift; sourceTree = "<group>"; };
@@ -100,14 +102,15 @@
 		54C81EEC275575420025330D /* Route360 */ = {
 			isa = PBXGroup;
 			children = (
+				54113F702A96ECF200797083 /* ExampleRoute.png */,
 				54C81EED275575420025330D /* AppDelegate.swift */,
 				54C81EEF275575420025330D /* SceneDelegate.swift */,
-				54C81EF1275575420025330D /* ViewController.swift */,
 				542B5077275C346D00C756CE /* README.md */,
 				3C2E4632275C59740070448A /* Harvard University.gpx */,
 				542B5076275C333E00C756CE /* DESIGN.md */,
 				543A6F1D275582E600636358 /* StartPoint.swift */,
 				54C81EF3275575420025330D /* Main.storyboard */,
+				54C81EF1275575420025330D /* ViewController.swift */,
 				3C150D8E275AC80A006D0951 /* LocationSearchTable.swift */,
 				3C9E893D2756DA1800A9032F /* SecondController.swift */,
 				54C81EF6275575450025330D /* Assets.xcassets */,
@@ -223,6 +226,7 @@
 			files = (
 				54C81EFA275575450025330D /* LaunchScreen.storyboard in Resources */,
 				54C81EF7275575450025330D /* Assets.xcassets in Resources */,
+				54113F712A96ECF200797083 /* ExampleRoute.png in Resources */,
 				54C81EF5275575420025330D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

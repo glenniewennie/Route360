@@ -14,7 +14,7 @@ protocol HandleMapSearch {
     func dropPinZoomIn(placemark: MKPlacemark)
 }
 
-// Used to convert Strings to Doubles
+// used to convert Strings to Doubles
 extension String {
     func toDouble() -> Double? {
         return NumberFormatter().number(from: self)?.doubleValue
@@ -37,7 +37,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         configureSearchTable()
     }
     
-    // Whenever the view is on screen determine current location
+    // whenever the view is on screen determine current location
     override func viewDidAppear(_ animated: Bool) {
         determineCurrentLocation()
     }
@@ -108,7 +108,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
     }
 
     
-    // This is called when routes need to be drawn
+    // this is called when routes need to be drawn
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
         // Generate a random color solely to be able to distinguish lines
@@ -116,7 +116,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return renderer
     }
     
-    // This is called when an annotation needs to be shown
+    // this is called when an annotation needs to be shown
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         guard annotation is StartPoint else { return nil }
         
@@ -125,7 +125,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
         
         if annotationView == nil {
-            // Create a new annotation view if one isn't in the queue
+            // create a new annotation view if one isn't in the queue
             annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             annotationView?.canShowCallout = true
             
@@ -138,18 +138,18 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         return annotationView
     }
     
-    // This is called when the i button of an annotation view is tapped
+    // this is called when the i button of an annotation view is tapped
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
-        // Make sure that the annotation that is sent is from a StartPoint
+        // make sure that the annotation that is sent is from a StartPoint
         guard let location = view.annotation as? StartPoint else {return}
         let latitude: String = String(location.coordinate.latitude)
         let longitude: String = String(location.coordinate.longitude)
-        // Show user latitude and longitude of starting point
+        // show user latitude and longitude of starting point
         let ac = UIAlertController(
             title: "Start Point",
             message: "latitude: \(latitude)\n longitude: \(longitude)",
             preferredStyle: .alert)
-        // Add done button so user can leave the alert
+        // add done button so user can leave the alert
         let doneAction = UIAlertAction(title: "Done", style: .default) {_ in
         }
         
@@ -157,7 +157,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         present(ac, animated: true)
     }
     
-    // If user wants to start at current location
+    // if user wants to start at current location
     @objc func startCurrentLocation(_ sender: Any) {
         let ac = UIAlertController(
             title: "Start at current location",
@@ -170,7 +170,7 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
 
         let submitAction = UIAlertAction(title: "Done", style: .default) { [weak self, weak ac] action in
             guard let distance = ac?.textFields?[0].text else { return }
-            // Make sure all of these are doubles
+            // make sure all of these are doubles
             guard let doubleDistance = distance.toDouble() else { return }
             self?.submit(doubleDistance)
         }
@@ -178,14 +178,14 @@ class ViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDele
         present(ac, animated: true)
     }
     
-    // Runs when user wants to find loop from current location
+    // runs when user wants to find loop from current location
     func submit(_ distance: Double) {
         guard let currentLatitude = currentLocation?.coordinate.latitude else {return}
         guard let currentLongitude = currentLocation?.coordinate.longitude else {return}
         let newStartPoint = StartPoint(title: "Current Location", coordinate: CLLocationCoordinate2D(latitude: currentLatitude, longitude: currentLongitude), distance: distance)
-        // Remove all previous annotations
+        // remove all previous annotations
         self.mapView.removeAnnotations(mapView.annotations)
-        // Also delete all old overlays
+        // also delete all old overlays
         self.mapView.removeOverlays(mapView.overlays)
         mapView.addAnnotation(newStartPoint)
         findRoutes(distance: distance, startPoint: newStartPoint)
